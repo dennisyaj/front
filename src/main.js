@@ -7,5 +7,4 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import router from './router/router'
 
-
 createApp(App).use(router).mount('#app')

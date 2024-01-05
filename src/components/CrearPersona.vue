@@ -1,25 +1,25 @@
 <template>
     <div>
-        <h1>Registrar nuevo cliente:</h1>
+        <h1>Registrar cliente:</h1>
         <br>
         <table>
             <tr>
                 <td><label for="">Nombre: </label></td>
-                <td><input v-model="nombre" required type="text"></td>
+                <td><input class="form-control" v-model="nombre" required type="text"></td>
             </tr>
             <tr>
                 <td><label for="">Direccion: </label></td>
-                <td><input v-model="direccion" required type="text"></td>
+                <td><input class="form-control" v-model="direccion" required type="text"></td>
             </tr>
             <tr>
                 <td><label for="">Edad: </label></td>
-                <td><input v-model="edad" required type="text"></td>
+                <td><input class="form-control" v-model="edad" required type="text"></td>
             </tr>
         </table>
 
         <table>
             <tr>
-                <td><button @click="Insertar()">Guardar</button></td>
+                <td><button class="btn btn-outline-success" @click="Insertar()">Guardar</button></td>
             </tr>
             <tr>
                 <td><label for="">{{ mensaje }}</label></td>
@@ -29,7 +29,7 @@
     </div>
 </template>
 <script>
-import { InsertarPer } from '@/js/ProcesarPersona';
+import { insertarFachada } from '@/js/ProcesarPersona';
 
 export default {
 
@@ -43,11 +43,7 @@ export default {
     },
     methods:{
         async Insertar(){
-            const per = {
-                    nombre: this.nombre,
-                    direccion: this.direccion,
-                    edad: this.edad
-                };
+            const per = { nombre: this.nombre, direccion: this.direccion, edad: this.edad };
              if(
                 this.nombre == null ||
                 this.direccion == null ||
@@ -55,10 +51,10 @@ export default {
              ){
                 this.mensaje = "Llene todos los datos"
              }else{
-              await InsertarPer(per);
-                this.mensaje = "Se ha ingresado correctamente",
-                this.nombre == null,
-                this.direccion == null,
+              await insertarFachada(per);
+                this.mensaje = "Se ha ingresado correctamente"
+                this.nombre == null
+                this.direccion == null
                 this.edad == null
              }
         }

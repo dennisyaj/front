@@ -1,42 +1,43 @@
 <template>
     <div>
-        <h1>Ingrese el Id el cual quiere buscar</h1>  
+        <h1>Buscar por ID</h1>
     </div>
     <br>
     <table>
         <tr>
-            <td><label for="">Ingrese el ID: </label></td>
-            <td><input required v-model="id" type="text"></td>
+            <td><label for=""> ID: </label></td>
+            <td><input class="form-control" required v-model="id" type="text"></td>
         </tr>
     </table>
     <br>
     <table>
         <tr>
-            <td><button @click="mostrarLista()">Buscar Persona</button></td>
+            <td><button class="btn btn-outline-success" @click="mostrarLista()">Buscar Persona</button></td>
         </tr>
     </table>
 
     <fieldset>
-        <div >
-            <table class="tablasP">
+        <div v-if="lista">
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th class="bonito" scope="col">ID</th>
-                        <th class="bonito" scope="col">Nombre</th>
-                        <th class="bonito" scope="col">Direccion</th>
-                        <th class="bonito" scope="col">Edad</th>
-                        <th class="bonito" scope="col">Editar</th>
-                        <th class="bonito" scope="col">Eliminar</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th class="bonito">{{ lista.id }}</th>
-                        <td class="bonito"> {{ lista.nombre }}</td>
-                        <td class="bonito">{{ lista.direccion }}</td>
-                        <td class="bonito">{{ lista.edad }}</td>
-                        <td class="bonito"><a id="idEditar" @click="editarPer(lista.id, lista.nombre, lista.direccion, lista.edad)">Editar</a></td>
-                        <td class="bonito"><a id="idEliminar" @click="alerta(lista.id)">Eliminar</a></td>
+                        <th>{{ lista.id }}</th>
+                        <td> {{ lista.nombre }}</td>
+                        <td>{{ lista.direccion }}</td>
+                        <td>{{ lista.edad }}</td>
+                        <td><a class="btn btn-outline-info" 
+                                @click="editarPer(lista.id, lista.nombre, lista.direccion, lista.edad)">Editar</a></td>
+                        <td><a class="btn btn-outline-danger" @click="alerta(lista.id)">Eliminar</a></td>
 
 
                     </tr>
@@ -49,90 +50,54 @@
 </template>
 
 <script>
-import { eliminarPerId, buscarPerId } from '@/js/ProcesarPersona';
-
+import { eliminarPorIdFachada, buscarPorIdFachada } from '@/js/ProcesarPersona';
 export default {
 
-    data(){
-        return{
-            lista:[],
+    data() {
+        return {
+            lista: null,
             mostrarB: false,
-            mensaje:null,
-            id:null
+            mensaje: null,
+            id: null
         }
     },
-    methods:{
-        async mostrarLista(){
-            this.lista = await buscarPerId(this.id)
+    methods: {
+        async mostrarLista() {
+            this.lista = await buscarPorIdFachada(this.id)
             console.log(this.lista)
             console.log(this.lista.length)
             console.log(this.lista.nombre)
-            if(this.lista.length >=1){
+            if (this.lista.length >= 1) {
                 this.mostrarB = true
                 this.mensaje = ""
-                console.log("tpm")
-            }else{
+            } else {
                 this.mostrarB = false
                 this.mensaje = "No existe Persona"
-                console.log("tpm2")
-
             }
         },
-        async PerEliminar(id){
-            await eliminarPerId(id)
+        async PerEliminar(id) {
+            await eliminarPorIdFachada(id)
             alert("Se ha eliminado correctamente")
             location.reload()
         },
-        alerta(id){
+        alerta(id) {
             var opcion = confirm("Desea eliminar la persona con id: " + id)
-            
-            if(opcion == true){
+
+            if (opcion == true) {
                 this.PerEliminar(id)
-                
-            }else{
+
+            } else {
                 alert("No se ha eliminado nada")
             }
         },
-        editarPer(id, nombre, direccion, edad){
-            this.$router.push({name: "editar", params:{ids: id, nombres:nombre, direccions: direccion, edads:edad}})
+        editarPer(id, nombre, direccion, edad) {
+            this.$router.push({ name: "editar", params: { idProp: id, nombreProp: nombre, direccionProp: direccion, edadProp: edad } })
         }
     }
-    }
+}
 
 
 
 </script>
 
-<style>
-table{
-    margin: 0 auto;
-  }
-  .tablasP{
-      margin: 0 auto;
-      border: 1px solid #000;
-      width: 80%;
-  }
-  .bonito{
-     width: 18%;
-     text-align: left;
-     vertical-align: top;
-     border: 1px solid #000;
-     border-collapse: collapse;
-     padding: 0.3em;
-     caption-side: bottom;
-  }
-  th {
-     background: #dadada;
-  }
-  
-  #idEditar,#idCertificados{
-      color: blue;
-      text-decoration: underline;  
-      cursor: pointer; 
-  }
-  #idEliminar{
-      color: red;
-      text-decoration: underline;  
-      cursor: pointer;  
-  }
-</style>
+<style></style>

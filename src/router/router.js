@@ -4,7 +4,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
 {
     path: '/',
-    component : () => import('../components/PaginaMain')
+    component : () => import('../components/MostrarTodos.vue')
 
 },
 {
@@ -14,6 +14,7 @@ const routes = [
 },
 {
     path: '/clientes/todos',
+    name: 'todos',
     component : () => import('../components/MostrarTodos')
 },
 {
@@ -21,12 +22,11 @@ const routes = [
     component : () => import('../components/BuscarId')
 },
 {
-    path: '/editar/:ids-:nombres-:direccions-:edads',
+    path: '/editar/:idProp:nombreProp-:direccionProp-:edadProp',
     name: 'editar',
     props: true,
     component : () => import('../components/EditarPerd')
 }
-
 
 
 ]

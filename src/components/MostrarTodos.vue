@@ -1,125 +1,81 @@
 <template>
     <div>
-        <h1>A continuacion se muestran todas las personas registradas</h1>
+        <h1>Lista personas</h1>
     </div>
     <br>
-    <fieldset>
-        <div v-if="mostrarB">
-            <table class="tablasP">
+  
+        <div v-if="mostrar">
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th class="bonito" scope="col">
-                            ID
-                        </th>
-                        <th class="bonito" scope="col">Nombre</th>
-                        <th class="bonito" scope="col">Direccion</th>
-                        <th class="bonito" scope="col">Edad</th>
-                        <th class="bonito" scope="col">Editar</th>
-                        <th class="bonito" scope="col">Eliminar</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="l in lista" v-bind:key="l" >
-                        <th class="bonito">{{ l.id }}</th>
-                        <td class="bonito"> {{ l.nombre }}</td>
-                        <td class="bonito">{{ l.direccion }}</td>
-                        <td class="bonito">{{ l.edad }}</td>
-                        <td class="bonito"><a id="idEditar" @click="editarPer(l.id, l.nombre, l.direccion, l.edad)">Editar</a></td>
-                        <td class="bonito"><a id="idEliminar" @click="alerta(l.id)">Eliminar</a></td>
-
-
+                    <tr v-for="l in lista" v-bind:key="l.id">
+                        <th>{{ l.id }}</th>
+                        <td> {{ l.nombre }}</td>
+                        <td>{{ l.direccion }}</td>
+                        <td>{{ l.edad }}</td>
+                        <td><a class="btn btn-outline-info"
+                                @click="editarPer(l.id, l.nombre, l.direccion, l.edad)">Editar</a></td>
+                        <td><a class="btn btn-outline-danger" @click="alerta(l.id)">Eliminar</a></td>
                     </tr>
                 </tbody>
-
-
             </table>
         </div>
-    </fieldset>
+
     <br>
     <label for="">{{ mensaje }}</label>
 </template>
 
 <script>
-import { listaPerTodos, eliminarPerId } from '@/js/ProcesarPersona';
+import { listaTodasFachada, eliminarPorIdFachada } from '@/js/ProcesarPersona';
 
 export default {
-
-    data(){
-        return{
+    data() {
+        return {
             lista: [],
-            mostrarB: false,
+            mostrar: false,
             mensaje: null
         }
     },
     methods: {
-        async mostrasLista(){
-            this.lista = await listaPerTodos()
-            console.log(this.lista)
-            console.log(this.lista.length)
-            if(this.lista.length == 0){
-                this.mensaje = "No hay personas ingresadas"
-                this.mostrarB = false
-            }else{
-                this.mostrarB = true
+        async mostrasLista() {
+            this.lista = await listaTodasFachada()
+            if (this.lista.length == 0) {
+                this.mensaje = "Lista vacia"
+                this.mostrar = false
+            } else {
+                this.mostrar = true
             }
         },
-        async PerEliminar(id){
-            await eliminarPerId(id)
+        async PerEliminar(id) {
+            await eliminarPorIdFachada(id)
             alert("Se ha eliminado correctamente")
             location.reload()
         },
-        alerta(id){
-            var opcion = confirm("Desea eliminar la persona con id: " + id)
-            
-            if(opcion == true){
+        alerta(id) {
+            var opcion = confirm("¿Eliminar la persona con id: " + id + "?")
+
+            if (opcion == true) {
                 this.PerEliminar(id)
-                
-            }else{
-                alert("No se ha eliminado nada")
+            } else {
+                alert("Borrado cancelado")
             }
         },
-        editarPer(id, nombre, direccion, edad){
-            this.$router.push({name: "editar", params:{ids: id, nombres:nombre, direccions: direccion, edads:edad}})
+        editarPer(id, nombre, direccion, edad) {
+            this.$router.push({ name: "editar", params: { idProp: id, nombreProp: nombre, direccionProp: direccion, edadProp: edad } })
         }
     },
-    mounted(){
+    mounted() {
         this.mostrasLista()
     }
-
 }
-
-
 </script>
-<style>
-table{
-    margin: 0 auto;
-  }
-  .tablasP{
-      margin: 0 auto;
-      border: 1px solid #000;
-      width: 80%;
-  }
-  .bonito{
-     width: 18%;
-     text-align: left;
-     vertical-align: top;
-     border: 1px solid #000;
-     border-collapse: collapse;
-     padding: 0.3em;
-     caption-side: bottom;
-  }
-  th {
-     background: #dadada;
-  }
-  
-  #idEditar,#idCertificados{
-      color: blue;
-      text-decoration: underline;  
-      cursor: pointer; 
-  }
-  #idEliminar{
-      color: red;
-      text-decoration: underline;  
-      cursor: pointer;  
-  }
-</style>
+<style></style>
