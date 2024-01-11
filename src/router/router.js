@@ -1,39 +1,48 @@
+import BuscarPersona from "@/pages/buscar-persona.vue";
+import CrearPersona from "@/pages/crear-persona.vue";
+import EditarPersona from "@/pages/editar-persona.vue";
+import Error404 from "@/pages/error404.vue";
+import TodosPersona from "@/pages/todos-persona.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
-
 const routes = [
-{
+  {
     path: '/',
-    component : () => import('../components/MostrarTodos.vue')
-
-},
-{
-    path: '/clientes/registrar',
-    component : () => import('../components/CrearPersona')
-
-},
-{
-    path: '/clientes/todos',
+    name: 'home',
+    component: TodosPersona
+  },
+  {
+    path: '/personas/crear',
+    name: 'crearPersona',
+    component: CrearPersona
+  },
+  {
+    path: '/personas',
     name: 'todos',
-    component : () => import('../components/MostrarTodos')
-},
-{
-    path: '/clientes/buscar',
-    component : () => import('../components/BuscarId')
-},
-{
-    path: '/editar/:idProp:nombreProp-:direccionProp-:edadProp',
-    name: 'editar',
+    component: TodosPersona
+  },
+  {
+    path: '/personas/buscar',
+    name: 'buscarPersona',
     props: true,
-    component : () => import('../components/EditarPerd')
-}
-
-
-]
+    component: BuscarPersona
+  },
+  {
+    path: '/personas/editar/:idProp',
+    name: 'editarPersona',
+    props: true,
+    component: EditarPersona
+  },
+  {
+    path: '/error',
+    name: 'error404',
+    component: Error404
+  }
+];
 
 const router = createRouter({
-    history: createWebHashHistory(),
-    routes
-})
+  history: createWebHashHistory(),
+  routes
+});
 
-export default router
+export default router;

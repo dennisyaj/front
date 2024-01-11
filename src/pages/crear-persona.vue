@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Registrar cliente:</h1>
+        <h1>Registrar persona:</h1>
         <br>
         <table>
             <tr>
@@ -43,7 +43,7 @@ export default {
     },
     methods:{
         async Insertar(){
-            const per = { nombre: this.nombre, direccion: this.direccion, edad: this.edad };
+            const p = { nombre: this.nombre, direccion: this.direccion, edad: this.edad };
              if(
                 this.nombre == null ||
                 this.direccion == null ||
@@ -51,7 +51,7 @@ export default {
              ){
                 this.mensaje = "Llene todos los datos"
              }else{
-              await insertarFachada(per);
+              await insertarFachada(p);
                 this.mensaje = "Se ha ingresado correctamente"
                 this.nombre == null
                 this.direccion == null
